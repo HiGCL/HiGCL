@@ -1,0 +1,159 @@
+#  ------------------------------------ Data related ------------------------------------
+dataset_name: 'Taobao'
+data_dir: '../my_data/Taobao/'
+num_users: 48749
+num_items: 39493
+ng_sample_dir: '../my_data/Taobao/ng_samples/'
+
+train_file_name:    
+  - my_purchase.txt
+  - my_cart.txt
+  - my_pv.txt
+
+valid_file_name: my_valid.txt
+
+test_file_name: my_test.txt
+
+behavior_name:
+  - purchase
+  - cart
+  - pageview
+
+
+# EP:0, IP:1, EN:2, IN:3   
+behavior_type:     
+  - 0
+  - 0
+  - 1
+
+
+
+behavior_id:     
+  - 0
+  - 1
+  - 2
+
+target_behavior_id: 0     # purchase  
+
+coarse_grained_type:      # EP:0, IP:1, EN:2, IN:3  
+  - 0
+  - 1
+
+target_coarse_id: 0        # the feedback id of target behavior   purchase-EP/0
+
+
+graph_norm_flag: False     
+sparse_graph_flag: True    
+
+
+
+#  ------------------------------------ training ------------------------------------
+device: cuda:0             # device
+
+# encoder
+graph_module: LightGCN    
+n_layers: 3  
+combine_choice: mean        
+multi_lightgcn: False       
+batch_norm: False           
+dropout: 0                  
+denoise_flag: False         
+mlp_flag: True              
+
+dim_each_feedback: 16       
+optimizer: adamw             
+learning_rate: 0.0003       
+weight_decay: 0.0001        
+momentum: 0.0001            
+opt_base_lr: 0.001          
+opt_max_lr: 0.005           
+train_batch_size: 8192     
+test_batch_size: 512        
+iter_per_batch: 1           
+num_epochs: 100            
+info_loss_choice: paper     
+patience: 10                
+
+random_seed: 6          
+score_choice: dot_minus     
+all_rank_flag: False        
+
+
+# regloss
+regloss_coe: 0           
+
+## BPR 相关
+multi_bpr: True              
+bpr_weight:                  
+  - 1
+  - 1
+  - 1
+
+
+## 对比学习相关
+coarse_contrast: True    
+coarse_infonce_coe: 1       
+fine_contrast: True        
+ssl_temp: 16               
+infonce_loss_coe: 0.2       
+aux_infonce_coe: 1          
+infonce_fold: 46            
+ssl_temp_list:             
+  - 16
+  - 16 
+
+p_cnt: 8                    
+folds: 1                    
+test_folds: 1               
+valid_folds: 1              
+wo_sample: True             
+ng_target_behavior_index: 0      
+
+
+topk:                       # hit ratio@ k
+  - 10
+  - 20
+  - 50
+  - 100
+
+
+
+
+
+
+## ！！！！！！！！！！！！！ useless ！！！！！！！！！！
+directed_flag: True  
+graph_include_self: True
+u2u_flag: False
+i2i_flag: False
+InfoNCE_loss_batch: True    
+sample_infonce: True
+sample_rate: 0.05   
+aux_bound: 4096          
+target_aux: True
+aux_bpr_coe: 1 
+dot_weights:               
+  - 1
+  - 1
+
+feedback_encoder: False     
+mask_flag: False            
+exp_name: taobao            
+
+# Graph learning
+graph_learn: False
+attention_hidden_size: 32
+coe_lambda: 0.8
+topk_u2u: 20
+topk_i2i: 20
+epsilon_u2u: 0
+epsilon_i2i: 0
+num_pers: 2
+metric_type: weighted_cosine
+smoothness_ratio: 0.2
+degree_ratio: 0
+sparsity_ratio: 0
+
+
+
+

@@ -1,0 +1,185 @@
+#  ------------------------------------ Data related ------------------------------------
+dataset_name: 'New_kuaishou'
+data_dir: '../my_data/new_kuaishou/'
+num_users: 34201
+num_items: 154723
+ng_sample_dir: '../my_data/new_kuaishou/ng_samples/'
+
+train_file_name:     
+   - map_u2i_like_graph
+   - map_u2i_forward_graph
+   - map_u2i_follow_graph
+   - map_u2i_click_graph
+   - map_u2i_not_shortview_graph
+   - map_u2i_hate_graph
+   - map_u2i_shortview_graph
+   - map_u2i_show_unclick_graph
+
+valid_file_name: valid
+
+test_file_name: test
+
+behavior_name:
+   - like
+   - forward
+   - follow
+   - click
+   - not_shortview
+   - hate
+   - shortview
+   - unclick
+
+# EP:0, IP:1, EN:2, IN:3  the feedback type of each behavior
+behavior_type:     
+   - 0
+   - 0
+   - 0
+   - 1
+   - 1
+   - 2
+   - 3
+   - 3
+
+behavior_id:  
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7 
+
+target_behavior_id: 3    # click
+
+
+coarse_grained_type:     # EP:0, IP:1, EN:2, IN:3  
+   - 0
+   - 1
+   - 2
+   - 3
+
+target_coarse_id: 1      # the feedback id of target behavior.   click-IP/1
+
+
+graph_norm_flag: False     
+sparse_graph_flag: True  
+
+
+#  ------------------------------------ training ------------------------------------
+device: cuda:1             # device
+
+# encoder 
+graph_module: LightGCN
+n_layers: 3
+combine_choice: mean    
+multi_lightgcn: False  
+batch_norm: False      
+dropout: 0            
+denoise_flag: True     
+mlp_flag: True          
+
+dim_each_feedback: 16  
+optimizer: adamw         
+learning_rate: 0.0003    
+weight_decay: 0.0001    
+momentum: 0.0001        
+opt_base_lr: 0.001      
+opt_max_lr: 0.005       
+train_batch_size: 8192  
+test_batch_size: 512   
+iter_per_batch: 1       
+num_epochs: 100         
+info_loss_choice: paper 
+patience: 10            
+
+random_seed: 6      
+score_choice: dot_minus
+all_rank_flag: False    
+
+
+# regloss
+regloss_coe: 0    
+
+## BPR 相关
+multi_bpr: True         
+bpr_weight:             
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 0
+  - 0
+  - 0
+
+
+## 对比学习相关
+coarse_contrast: True  
+coarse_infonce_coe: 1   
+fine_contrast: True     
+ssl_temp: 16           
+infonce_loss_coe: 0.05     
+aux_infonce_coe: 1     
+infonce_fold: 46         
+ssl_temp_list:           
+  - 16
+  - 16
+
+
+p_cnt: 8                    
+folds: 1                    
+test_folds: 1               
+valid_folds: 1              
+wo_sample: True             
+ng_target_behavior_index: 3 
+
+
+topk:                    # hit ratio@ k 
+  - 10
+  - 20
+  - 50
+  - 100
+
+
+
+
+## ！！！！！！！！！！！！！ useless ！！！！！！！！！！
+directed_flag: True
+graph_include_self: True
+u2u_flag: False
+i2i_flag: False
+
+dot_weights:
+  - 1
+  - 1
+  - 1
+  - 1
+
+
+InfoNCE_loss_batch: True
+sample_infonce: True
+sample_rate: 0.01
+
+aux_bpr_coe: 1
+
+feedback_encoder: False
+
+exp_name: kuaishou
+aux_bound: 4096
+mask_flag: False
+
+
+# Graph learning
+graph_learn: False
+attention_hidden_size: 32
+coe_lambda: 0.8
+topk_u2u: 20
+topk_i2i: 20
+epsilon_u2u: 0
+epsilon_i2i: 0
+num_pers: 2
+metric_type: weighted_cosine
+smoothness_ratio: 0.2
+degree_ratio: 0
+sparsity_ratio: 0
